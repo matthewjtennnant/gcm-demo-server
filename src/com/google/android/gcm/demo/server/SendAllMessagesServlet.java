@@ -80,7 +80,8 @@ public class SendAllMessagesServlet extends BaseServlet {
         // send a single message using plain post
         String registrationId = devices.get(0).regId;
         Message message = new Message.Builder().build();
-        if (devices.get(0).footballTeam.equals("Manchester United") || devices.get(0).footballTeam.equals("Arsenal")) {
+        Device onlyDevice = devices.get(0);
+        if (onlyDevice.footballTeam.equalsIgnoreCase("Manchester United") || onlyDevice.footballTeam.equalsIgnoreCase("Arsenal")) {
         	Result result = sender.send(message, registrationId, 5);
         	status = "Sent message to one device: " + result;
         }
@@ -96,7 +97,7 @@ public class SendAllMessagesServlet extends BaseServlet {
         int tasks = 0;
         for (Device device : devices) {
           counter++;
-          if (device.footballTeam.equals("Manchester United") || device.footballTeam.equals("Arsenal")) 
+          if (device.footballTeam.equalsIgnoreCase("Manchester United") || device.footballTeam.equalsIgnoreCase("Arsenal")) 
         	  partialDevices.add(device);
           int partialSize = partialDevices.size();
           if (partialSize == MULTICAST_SIZE || counter == total) {
