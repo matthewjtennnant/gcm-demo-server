@@ -76,7 +76,7 @@ public class SendAllMessagesServlet extends BaseServlet {
     } else {
       // NOTE: check below is for demonstration purposes; a real application
       // could always send a multicast, even for just one recipient
-      if (devices.size() == 1) {
+     /* if (devices.size() == 1) {
         // send a single message using plain post
         String registrationId = devices.get(0).regId;
         Message message = new Message.Builder().build();
@@ -88,7 +88,7 @@ public class SendAllMessagesServlet extends BaseServlet {
         else {
         	status = "Device not favourited these teams ";
       	}
-      } else {
+      } else {*/
         // send a multicast message using JSON
         // must split in chunks of 1000 devices (GCM limit)
         int total = devices.size();
@@ -109,7 +109,7 @@ public class SendAllMessagesServlet extends BaseServlet {
         status = "Asynchronously sending " + tasks + " multicast messages to " +
             total + " devices";
       }
-    }
+    //}
     req.setAttribute(HomeServlet.ATTRIBUTE_STATUS, status.toString());
     getServletContext().getRequestDispatcher("/home").forward(req, resp);
   }
@@ -124,7 +124,7 @@ public class SendAllMessagesServlet extends BaseServlet {
 
       public void run() {
         Message message = new Message.Builder().delayWhileIdle(true).timeToLive(5400).collapseKey("12345").addData("type","football").
-        		addData("home team","Man Utd 1").addData("away team","0").build();
+        		addData("home team","Man Utd 1").addData("away team","Arsenal 0").build();
         MulticastResult multicastResult;
         try {
           multicastResult = sender.send(message, ids, 5);
