@@ -96,7 +96,7 @@ public class SendAllMessagesServlet extends BaseServlet {
         int tasks = 0;
         for (Device device : devices) {
           counter++;
-          if (devices.get(0).equals("Manchester United") || devices.get(0).equals("Arsenal")) 
+          if (device.footballTeam.equals("Manchester United") || device.footballTeam.equals("Arsenal")) 
         	  partialDevices.add(device);
           int partialSize = partialDevices.size();
           if (partialSize == MULTICAST_SIZE || counter == total) {
