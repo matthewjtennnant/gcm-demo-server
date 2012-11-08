@@ -5,12 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet that favourites a team with a device, whose registration id is identified by
- * {@link #PARAMETER_REG_ID}.
- *
+ * Servlet that favourites a team with a user, whose registration id is identified by {@link #PARAMETER_REG_ID}.
+ * 
  * <p>
- * The client app should call this servlet when it the user
- * favourites a football team
+ * The client app should call this servlet when it the user favourites a football team
  */
 @SuppressWarnings("serial")
 public class FavouriteServlet extends BaseServlet {

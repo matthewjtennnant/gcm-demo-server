@@ -35,7 +35,7 @@ import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 
 /**
- * Servlet that adds a new message to all registered devices.
+ * Servlet that adds a new message to all registered users.
  * <p>
  * This servlet is used just by the browser (i.e., not device).
  */
@@ -69,10 +69,10 @@ public class SendAllMessagesServlet extends BaseServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws IOException, ServletException {
-    List<User> devices = Datastore.getUsers();
+        List<User> users = Datastore.getUsers();
     String status;
-    if (devices.isEmpty()) {
-      status = "Message ignored as there is no device registered!";
+        if (users.isEmpty()) {
+            status = "Message ignored as there is no user registered!";
     } else {
       // NOTE: check below is for demonstration purposes; a real application
       // could always send a multicast, even for just one recipient
@@ -91,38 +91,39 @@ public class SendAllMessagesServlet extends BaseServlet {
       } else {*/
         // send a multicast message using JSON
         // must split in chunks of 1000 devices (GCM limit)
-        int total = devices.size();
-        List<User> partialDevices = new ArrayList<User>();
+            int total = users.size();
+            List<User> partialUsers = new ArrayList<User>();
         int counter = 0;
         int tasks = 0;
-        for (User device : devices) {
+            for (User user : users) {
           counter++;
-          if (device.footballTeam.contains("manchester united") || device.footballTeam.contains("arsenal")) 
-        	  partialDevices.add(device);
-          int partialSize = partialDevices.size();
+                if (user.footballTeam.contains("manchester united") || user.footballTeam.contains("arsenal"))
+                    partialUsers.add(user);
+                int partialSize = partialUsers.size();
           if (partialSize == MULTICAST_SIZE || counter == total) {
-            asyncSend(partialDevices);
-            partialDevices.clear();
+                    asyncSend(partialUsers);
+                    partialUsers.clear();
             tasks++;
           }
         }
         status = "Asynchronously sending " + tasks + " multicast messages to " +
-            total + " devices";
+ total + " users";
       }
     //}
     req.setAttribute(HomeServlet.ATTRIBUTE_STATUS, status.toString());
     getServletContext().getRequestDispatcher("/home").forward(req, resp);
   }
 
-  private void asyncSend(final List<User> partialDevices) {
+    private void asyncSend(final List<User> partialUsers) {
     // make a copy
     final List<String> ids = new ArrayList<String>();
-    for (User device : partialDevices) {
-    	ids.add(device.regId);
+        for (User user : partialUsers) {
+            ids.add(user.regId);
   	}
     threadPool.execute(new Runnable() {
 
-      public void run() {
+      @Override
+    public void run() {
         Message message = new Message.Builder().delayWhileIdle(true).timeToLive(5400).collapseKey("12345").addData("type","football").
         		addData("home team","Man Utd 1").addData("away team","Arsenal 0").build();
         MulticastResult multicastResult;
@@ -139,7 +140,7 @@ public class SendAllMessagesServlet extends BaseServlet {
           Result result = results.get(i);
           String messageId = result.getMessageId();
           if (messageId != null) {
-            logger.fine("Succesfully sent message to device: " + regId +
+                        logger.fine("Succesfully sent message to user: " + regId +
                 "; messageId = " + messageId);
             String canonicalRegId = result.getCanonicalRegistrationId();
             if (canonicalRegId != null) {
@@ -151,8 +152,8 @@ public class SendAllMessagesServlet extends BaseServlet {
             String error = result.getErrorCodeName();
             if (error.equals(Constants.ERROR_NOT_REGISTERED)) {
               // application has been removed from device - unregister it
-              logger.info("Unregistered device: " + regId);
-              Datastore.unregister(regId,partialDevices.get(i).userId);
+                            logger.info("Unregistered user: " + regId);
+                            Datastore.unregister(regId, partialUsers.get(i).userId);
             } else {
               logger.severe("Error sending message to " + regId + ": " + error);
             }

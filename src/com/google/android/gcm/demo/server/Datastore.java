@@ -46,25 +46,25 @@ public final class Datastore {
     }
 
     /**
-     * Registers a device.
+     * Registers a user.
      */
-    public static void register(String regId, String deviceId) {
+    public static void register(String regId, String userId) {
         logger.info("Registering " + regId);
         synchronized (users) {
-            for (User device : users) {
-                if (device.userId.equals(deviceId))
-                    device.regId = regId;
+            for (User user : users) {
+                if (user.userId.equals(userId))
+                    user.regId = regId;
                 return;
             }
             User user = new User();
             user.regId = regId;
-            user.userId = deviceId;
+            user.userId = userId;
             users.add(user);
         }
     }
 
     /**
-     * Unregisters a device.
+     * Unregisters a user.
      */
     public static void unregister(String regId, String userId) {
         logger.info("Unregistering " + regId);
@@ -83,16 +83,16 @@ public final class Datastore {
     public static void updateRegistration(String userId, String newId) {
         logger.info("Updating " + userId + " to " + newId);
         synchronized (users) {
-            for (User device : users) {
-                if (device.userId.equals(userId))
-                    device.regId = newId;
+            for (User user : users) {
+                if (user.userId.equals(userId))
+                    user.regId = newId;
                 return;
             }
         }
     }
 
     /**
-     * Gets all registered devices.
+     * Gets all registered users.
      */
     public static List<User> getUsers() {
         synchronized (users) {

@@ -25,10 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.android.gcm.demo.server.Datastore.User;
 
 /**
- * Servlet that adds display number of devices and button to send a message.
+ * Servlet that adds display number of users and button to send a message.
  * <p>
- * This servlet is used just by the browser (i.e., not device) and contains the
- * main page of the demo app.
+ * This servlet is used just by the browser (i.e., not device) and contains the main page of the demo app.
  */
 @SuppressWarnings("serial")
 public class HomeServlet extends BaseServlet {
@@ -53,13 +52,13 @@ public class HomeServlet extends BaseServlet {
     if (status != null) {
       out.print(status);
     }
-    List<User> devices = Datastore.getUsers();
-    if (devices.isEmpty()) {
-      out.print("<h2>No devices registered!</h2>");
+        List<User> users = Datastore.getUsers();
+        if (users.isEmpty()) {
+            out.print("<h2>No users registered!</h2>");
     } else {
-      out.print("<h2>" + devices.size() + " device(s) registered!</h2>");
-      for (User device : devices) {
-    	  out.print("Device: regId " + device.regId + " team " + device.footballTeam);
+            out.print("<h2>" + users.size() + " users(s) registered!</h2>");
+            for (User user : users) {
+                out.print("User: regId " + user.regId + " team " + user.footballTeam);
       }
       out.print("<form name='form' method='POST' action='sendAll'>");
       out.print("<input type='submit' value='Send Man Utd 1 Arsenal 0' />");
