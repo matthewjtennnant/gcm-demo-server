@@ -22,119 +22,100 @@ import java.util.logging.Logger;
 /**
  * Simple implementation of a data store using standard Java collections.
  * <p>
- * This class is thread-safe but not persistent (it will lost the data when the
- * app is restarted) - it is meant just as an example.
+ * This class is thread-safe but not persistent (it will lost the data when the app is restarted) - it is meant just as
+ * an example.
  */
 public final class Datastore {
 
-	public static class Device {
-		public String deviceId;
-		public String regId;
-		public String footballTeam;
+    public static class User {
+        public String userId;
+        public String regId;
+        public String footballTeam;
 
-		@Override
-		public String toString() {
-			return "Device [deviceId=" + deviceId + "\\n" + "regId=" + regId + "\\n" + "footballTeam=" + footballTeam + "]";
-		}
-
-	}
-  
-  private static final List<Device> devices = new ArrayList<Device>();
-  private static final Logger logger =
-      Logger.getLogger(Datastore.class.getName());
-
-  private Datastore() {
-    throw new UnsupportedOperationException();
-  }
-
-	/**
-	 * Registers a device.
-	 */
-	public static void register(String regId, String deviceId) {
-		logger.info("Registering " + regId);
-		synchronized (devices) {
-			for (Device device : devices) {
-				if (device.deviceId.equals(deviceId))
-					device.regId = regId;
-				return;
-			}
-			Device device = new Device();
-			device.regId = regId;
-			device.deviceId = deviceId;
-			devices.add(device);
-		}
-	}
-
-  /**
-   * Unregisters a device.
-   */
-  public static void unregister(String regId, String deviceId) {
-    logger.info("Unregistering " + regId);
-    synchronized (devices) {
-    	for (Device device : devices) {
-			if (device.deviceId.equals(deviceId))
-				device.regId = null;
-			return;
-		}
+        @Override
+        public String toString() {
+            return "User [userId=" + userId + ", regId=" + regId + ", footballTeams=" + footballTeam + "]";
+        }
     }
-  }
 
-  /**
-   * Updates the registration id of a device.
-   */
-  public static void updateRegistration(String deviceId, String newId) {
-    logger.info("Updating " + deviceId + " to " + newId);
-    synchronized (devices) {
-    	for (Device device : devices) {
-			if (device.deviceId.equals(deviceId))
-				device.regId = newId;
-			return;
-		}
+    private static final List<User> users = new ArrayList<User>();
+    private static final Logger logger = Logger.getLogger(Datastore.class.getName());
+
+    private Datastore() {
+        throw new UnsupportedOperationException();
     }
-  }
 
-  /**
-   * Gets all registered devices.
-   */
-  public static List<Device> getDevices() {
-    synchronized (devices) {
-      return new ArrayList<Device>(devices);
+    /**
+     * Registers a device.
+     */
+    public static void register(String regId, String deviceId) {
+        logger.info("Registering " + regId);
+        synchronized (users) {
+            for (User device : users) {
+                if (device.userId.equals(deviceId))
+                    device.regId = regId;
+                return;
+            }
+            User user = new User();
+            user.regId = regId;
+            user.userId = deviceId;
+            users.add(user);
+        }
     }
-  }
 
-	/**
-	 * Favourite a particular team
-	 * 
-	 * @param regId
-	 * @param uniqueId
-	 */
-	public static void favourite(String team, String deviceId) {
-		logger.info("Favouriting " + deviceId + " for " + team);
-		synchronized (devices) {
-			for (Device device : devices) {
-				if (device.deviceId.equals(deviceId)) {
-					device.footballTeam = team;
-					return;
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Unfavourite a particular team
-	 * 
-	 * @param team
-	 * @param deviceId
-	 */
-	public static void unfavourite(String team, String deviceId) {
-		logger.info("Unfavouriting " + deviceId + " for " + team);
-		synchronized (devices) {
-			for (Device device : devices) {
-				if (device.deviceId.equals(deviceId)) {
-					device.footballTeam = null;
-					return;
-				}
-			}
-		}
-	}
+    /**
+     * Unregisters a device.
+     */
+    public static void unregister(String regId, String userId) {
+        logger.info("Unregistering " + regId);
+        synchronized (users) {
+            for (User user : users) {
+                if (user.userId.equals(userId))
+                    user.regId = null;
+                return;
+            }
+        }
+    }
+
+    /**
+     * Updates the registration id of a device.
+     */
+    public static void updateRegistration(String userId, String newId) {
+        logger.info("Updating " + userId + " to " + newId);
+        synchronized (users) {
+            for (User device : users) {
+                if (device.userId.equals(userId))
+                    device.regId = newId;
+                return;
+            }
+        }
+    }
+
+    /**
+     * Gets all registered devices.
+     */
+    public static List<User> getUsers() {
+        synchronized (users) {
+            return new ArrayList<User>(users);
+        }
+    }
+
+    /**
+     * Favourite a particular team
+     * 
+     * @param regId
+     * @param uniqueId
+     */
+    public static void favourite(String team, String userId) {
+        logger.info("Favouriting " + userId + " for " + team);
+        synchronized (users) {
+            for (User user : users) {
+                if (user.userId.equals(userId)) {
+                    user.footballTeam = team;
+                    return;
+                }
+            }
+        }
+    }
+
 }

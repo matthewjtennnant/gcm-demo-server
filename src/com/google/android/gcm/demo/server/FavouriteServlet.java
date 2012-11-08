@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @SuppressWarnings("serial")
 public class FavouriteServlet extends BaseServlet {
-	 private static final String PARAMETER_UNIQUE_ID = "deviceId";
-	 private static final String PARAMETER_TEAM = "team";
+    private static final String PARAMETER_UNIQUE_ID = "userId";
+    private static final String PARAMETER_TEAM = "team[0]";
 	 
 	  @Override
 	  protected void doPost(HttpServletRequest req, HttpServletResponse resp)

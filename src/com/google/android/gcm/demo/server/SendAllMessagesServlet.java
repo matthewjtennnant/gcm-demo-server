@@ -27,7 +27,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.android.gcm.demo.server.Datastore.Device;
+import com.google.android.gcm.demo.server.Datastore.User;
 import com.google.android.gcm.server.Constants;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.MulticastResult;
@@ -69,7 +69,7 @@ public class SendAllMessagesServlet extends BaseServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws IOException, ServletException {
-    List<Device> devices = Datastore.getDevices();
+    List<User> devices = Datastore.getUsers();
     String status;
     if (devices.isEmpty()) {
       status = "Message ignored as there is no device registered!";
@@ -92,10 +92,10 @@ public class SendAllMessagesServlet extends BaseServlet {
         // send a multicast message using JSON
         // must split in chunks of 1000 devices (GCM limit)
         int total = devices.size();
-        List<Device> partialDevices = new ArrayList<Device>();
+        List<User> partialDevices = new ArrayList<User>();
         int counter = 0;
         int tasks = 0;
-        for (Device device : devices) {
+        for (User device : devices) {
           counter++;
           if (device.footballTeam.contains("manchester united") || device.footballTeam.contains("arsenal")) 
         	  partialDevices.add(device);
@@ -114,10 +114,10 @@ public class SendAllMessagesServlet extends BaseServlet {
     getServletContext().getRequestDispatcher("/home").forward(req, resp);
   }
 
-  private void asyncSend(final List<Device> partialDevices) {
+  private void asyncSend(final List<User> partialDevices) {
     // make a copy
     final List<String> ids = new ArrayList<String>();
-    for (Device device : partialDevices) {
+    for (User device : partialDevices) {
     	ids.add(device.regId);
   	}
     threadPool.execute(new Runnable() {
@@ -152,7 +152,7 @@ public class SendAllMessagesServlet extends BaseServlet {
             if (error.equals(Constants.ERROR_NOT_REGISTERED)) {
               // application has been removed from device - unregister it
               logger.info("Unregistered device: " + regId);
-              Datastore.unregister(regId,partialDevices.get(i).deviceId);
+              Datastore.unregister(regId,partialDevices.get(i).userId);
             } else {
               logger.severe("Error sending message to " + regId + ": " + error);
             }

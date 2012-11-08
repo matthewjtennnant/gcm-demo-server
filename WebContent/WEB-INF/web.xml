@@ -91,16 +91,4 @@
     <url-pattern>/favourite</url-pattern>
   </servlet-mapping>
 
-  <servlet>
-    <servlet-name>UnfavouriteServlet</servlet-name>
-    <servlet-class>
-      com.google.android.gcm.demo.server.UnfavouriteServlet
-    </servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>UnfavouriteServlet</servlet-name>
-    <url-pattern>/unfavourite</url-pattern>
-  </servlet-mapping>
 </web-app>

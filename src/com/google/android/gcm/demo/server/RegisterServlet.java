@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 public class RegisterServlet extends BaseServlet {
 
   private static final String PARAMETER_REG_ID = "regId";
-  private static final String PARAMETER_DEVICE_ID = "deviceId";
+    private static final String PARAMETER_DEVICE_ID = "userId";
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)

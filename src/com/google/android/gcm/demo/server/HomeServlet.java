@@ -22,7 +22,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.android.gcm.demo.server.Datastore.Device;
+import com.google.android.gcm.demo.server.Datastore.User;
 
 /**
  * Servlet that adds display number of devices and button to send a message.
@@ -53,12 +53,12 @@ public class HomeServlet extends BaseServlet {
     if (status != null) {
       out.print(status);
     }
-    List<Device> devices = Datastore.getDevices();
+    List<User> devices = Datastore.getUsers();
     if (devices.isEmpty()) {
       out.print("<h2>No devices registered!</h2>");
     } else {
       out.print("<h2>" + devices.size() + " device(s) registered!</h2>");
-      for (Device device : devices) {
+      for (User device : devices) {
     	  out.print("Device: regId " + device.regId + " team " + device.footballTeam);
       }
       out.print("<form name='form' method='POST' action='sendAll'>");
