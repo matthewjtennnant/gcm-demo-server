@@ -13,14 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class FavouriteServlet extends BaseServlet {
     private static final String PARAMETER_UNIQUE_ID = "userId";
-    private static final String PARAMETER_TEAM = "team[0]";
+    private static final String PARAMETER_TEAM = "teams[0]";
 	 
 	  @Override
 	  protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 	      throws ServletException {
-	    String deviceId = getParameter(req, PARAMETER_UNIQUE_ID);
+        String userId = getParameter(req, PARAMETER_UNIQUE_ID);
 	    String team = getParameter(req, PARAMETER_TEAM);
-	    Datastore.favourite(team,deviceId);
+        System.out.println("FS" + userId + team);
+        Datastore.favourite(team, userId);
 	    setSuccess(resp);
 	  }
 }

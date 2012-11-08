@@ -88,7 +88,7 @@
 
   <servlet-mapping>
     <servlet-name>FavouriteServlet</servlet-name>
-    <url-pattern>/favourite</url-pattern>
+    <url-pattern>/favourites</url-pattern>
   </servlet-mapping>
 
 </web-app>
