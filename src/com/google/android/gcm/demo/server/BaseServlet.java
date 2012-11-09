@@ -61,8 +61,10 @@ abstract class BaseServlet extends HttpServlet {
                 }
                 logger.fine("parameters: " + parameters);
             }
-            throw new ServletException("Parameter " + parameter + " not found");
+            // throw new ServletException("Parameter " + parameter + " not found");
         }
+        if (value == null)
+            return "";
         return value.trim();
     }
 
